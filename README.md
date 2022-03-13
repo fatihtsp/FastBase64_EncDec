@@ -67,50 +67,70 @@ Test Results from command windows:
 Ultrafast base64 encode/decode library
 https://github.com/fatihtsp/FastBase64_EncDec
 -------------------------------------------------------------------
+
 chromium codec check.
 chromium_base64_encode --> Time (ms): 0
+
 decoded:
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
 real   :
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
-chromium_base64_decode --> Time (ms): 0
-chromium_base64_decode --> Time (ms): 0
-chromium codec check.
-chromium_base64_encode --> Time (ms): 0
-decoded:
-YWJjMTIzIT8kKiYoKSctPUB+
-real   :
-YWJjMTIzIT8kKiYoKSctPUB+
+
 chromium_base64_decode --> Time (ms): 0
 chromium_base64_decode --> Time (ms): 0
 chromium codec check.
+
 chromium_base64_encode --> Time (ms): 0
+
+decoded:
+YWJjMTIzIT8kKiYoKSctPUB+
+
+real   :
+YWJjMTIzIT8kKiYoKSctPUB+
+
+chromium_base64_decode --> Time (ms): 0
+chromium_base64_decode --> Time (ms): 0
+chromium codec check.
+chromium_base64_encode --> Time (ms): 0
+
 decoded:
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
+
 real   :
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
 chromium_base64_decode --> Time (ms): 0
 chromium_base64_decode --> Time (ms): 0
+
 klomp avx2 codec check.
 klomp_avx2_base64_encode --> Time (ms): 0
+
 decoded:
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
 real   :
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
 klomp_avx2_base64_decode --> Time (ms): 0
 klomp_avx2_base64_decode --> Time (ms): 0
 klomp avx2 codec check.
+
 klomp_avx2_base64_encode --> Time (ms): 0
+
 decoded:
 YWJjMTIzIT8kKiYoKSctPUB+
+
 real   :
 YWJjMTIzIT8kKiYoKSctPUB+
 klomp_avx2_base64_decode --> Time (ms): 0
 klomp_avx2_base64_decode --> Time (ms): 0
 klomp avx2 codec check.
+
 klomp_avx2_base64_encode --> Time (ms): 0
+
 decoded:
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
+
 real   :
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
 klomp_avx2_base64_decode --> Time (ms): 0
@@ -118,8 +138,10 @@ klomp_avx2_base64_decode --> Time (ms): 0
 
 scalar codec check.
 scalar_base64_encode --> Time (ms): 0
+
 decoded:
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
+
 real   :
 TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=
 scalar_base64_decode --> Time (ms): 0
@@ -127,8 +149,10 @@ scalar_base64_decode --> Time (ms): 0
 
 scalar codec check.
 scalar_base64_encode --> Time (ms): 0
+
 decoded:
 YWJjMTIzIT8kKiYoKSctPUB+
+
 real   :
 YWJjMTIzIT8kKiYoKSctPUB+
 scalar_base64_decode --> Time (ms): 0
@@ -136,24 +160,37 @@ scalar_base64_decode --> Time (ms): 0
 
 scalar codec check.
 scalar_base64_encode --> Time (ms): 0
+
 decoded:
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
+
 real   :
 VHV0b3JpYWxzUG9pbnQ/amF2YTg=
 scalar_base64_decode --> Time (ms): 0
 scalar_base64_decode --> Time (ms): 0
 
 Encode File: VeryBigFile.txt  klomp_avx2_base64_encode...
+
 VeryBigFile.txt file size (bytes): 28600157
+
 VeryBigFile.txt file encoded length (bytes)   : 38133544
+
 klomp_avx2_base64_encode --> Time (ms): 20
+
 VeryBigFile.txtfile is decoding...
+
 klomp_avx2_base64_decode --> Time (ms): 24
+
 VeryBigFile.txt file decoded length (bytes): 28600157
+
 System.NetEncoding.TNetEncoding.Base64String.Encode --> Time (ms): 323
+
 VeryBigFile.txt file decoded length (bytes): 38215124
+
 VeryBigFile.txtfile is decoding...
+
 System.NetEncoding.TNetEncoding.Base64String.Decode --> Time (ms): 289
+
 VeryBigFile.txt file decoded length (bytes): 28600157
 
 Program finished... Press any key to quit.
