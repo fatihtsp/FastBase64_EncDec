@@ -65,6 +65,7 @@ Test Results from command window (project exe: FastBase64_AVX2_4D win64 applicat
 
 
 Ultrafast base64 encode/decode library
+
 https://github.com/fatihtsp/FastBase64_EncDec
 -------------------------------------------------------------------
 
