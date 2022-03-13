@@ -1,4 +1,4 @@
-                                                     Ultrafast base64 encode/decode Library                         
+                                            Ultrafast base64 encode/decode Library                
 
 # FastBase64 Encoder / Decocder for Delphi.
 
