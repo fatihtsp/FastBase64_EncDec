@@ -25,8 +25,25 @@ begin
   Result := Encoding.GetString(StringBytes);
 end;
 
+function SaveBytesToFile(const _Bytes: TBytes; FileName: String; const Encoding: TEncoding): string;
+var
+  StringBytes: TBytes;
+  Stream     : TStringStream;
+
+begin
+ try
+  Stream     := TStringStream.Create('', Encoding);
+  Stream.Position := 0;
+  Stream.WriteData( _Bytes, Length(_Bytes) );
+  Stream.SaveToFile( FileName );
+ finally
+  FreeAndNil(Stream);
+ end;
+
+end;
+
 // These are from stackoverflow....
-function FileMayBeUTF8(FileName: WideString): Boolean;
+function FileMayBeUTF8(FileName: String): Boolean;
 var
  Stream: TMemoryStream;
  BytesRead: integer;
@@ -217,7 +234,8 @@ begin
     scalar_checkExample(@tutosource[1],       @tutocoded[1]);
 
     var sFileName: String;
-    sFileName := VeryBigFileName;
+    //sFileName := VeryBigFileName;
+    sFileName := BigFileName;
 
     writeln;
     writeln('Encode File: ' + sFileName + '  klomp_avx2_base64_encode...');
@@ -272,28 +290,52 @@ begin
 
 
 
-    // System.NetEncoding tests
-    sts.Position := 0;
+   // System.NetEncoding tests
+   sts.Position := 0;
 
-    ST       := TStopwatch.StartNew;
-    ss       := System.NetEncoding.TNetEncoding.Base64String.Encode( PAnsiChar(sts.Memory) );
-    writeLn('System.NetEncoding.TNetEncoding.Base64String.Encode --> Time (ms): ', ST.ElapsedMilliseconds);
-    writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
-    writeLn(sFileName + 'file is decoding...');
+   ST       := TStopwatch.StartNew;
+   ss       := System.NetEncoding.TNetEncoding.Base64String.Encode( PAnsiChar(sts.Memory) );
+   writeLn('System.NetEncoding.TNetEncoding.Base64String.Encode --> Time (ms): ', ST.ElapsedMilliseconds);
+   writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
+   writeLn(sFileName + 'file is decoding...');
 
-    ST       := TStopwatch.StartNew;
-    ss       := System.NetEncoding.TNetEncoding.Base64String.Decode( ss );
-    writeLn('System.NetEncoding.TNetEncoding.Base64String.Decode --> Time (ms): ', ST.ElapsedMilliseconds);
-    writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
-    SaveStringToFile( sFileName + '-TNetEncoding.Base64-EncDec.log', ss, TEncoding.Default );
+   ST       := TStopwatch.StartNew;
+   ss       := System.NetEncoding.TNetEncoding.Base64String.Decode( ss );
+   writeLn('System.NetEncoding.TNetEncoding.Base64String.Decode --> Time (ms): ', ST.ElapsedMilliseconds);
+   writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
+   SaveStringToFile( sFileName + '-TNetEncoding.Base64-EncDec.log', ss, TEncoding.Default );
 
 
-    var s: String;
-    dest1 := Base64EncodeTxtKindFile( sFileName, len );
-    s     := Base64DecodeTxtKindFile( dest1, len, codedlen, True, 'big-txt-Enc_DecodedFunction.log');
-    Free(dest1);
+   var s: String;
+   dest1 := Base64EncodeTxtKindFile( sFileName, len );
+   s     := Base64DecodeTxtKindFile( dest1, len, codedlen, True, 'big-txt-Enc_DecodedFunction.log');
+   Free(dest1);
 
-    FreeAndNil(sts);
+
+   // Indy IdCoderMIME encoding/decoding tests
+   sts.Position    := 0;
+
+   var Bytes       : TIdBytes;
+   var Base64String: String;
+   sts.Read( TBytes(Bytes), sts.Size);
+   //Bytes           := TIdBytes(PAnsiChar(sts.Memory)); // array of bytes
+   ST              := TStopwatch.StartNew;
+   Base64String    := TIdEncoderMIME.EncodeStream( sts );
+
+   writeLn('TIdEncoderMIME.EncodeBytes --> Time (ms): ', ST.ElapsedMilliseconds);
+   writeLn(sFileName + ' file decoded length (bytes): ', Length(Base64String));
+
+   writeLn(sFileName + 'file is decoding...');
+   ST           := TStopwatch.StartNew;
+   Bytes        := TIdDecoderMIME.DecodeBytes(Base64String);
+   writeLn('TIdEncoderMIME.DecodeBytes --> Time (ms): ', ST.ElapsedMilliseconds);
+   writeLn(sFileName + ' file decoded length (bytes): ', Length(Bytes));
+
+   SaveBytesToFile( TBytes(Bytes), sFileName + '-TIdDecoderMIME.Base64-EncDec.log', TEncoding.Default );
+
+   SetLength(Bytes, 0);
+   FreeAndNil(sts);
+
 
     WriteLn;
     WriteLn('Program finished... Press any key to quit.');

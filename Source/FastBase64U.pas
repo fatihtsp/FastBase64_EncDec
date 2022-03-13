@@ -22,7 +22,7 @@
 { Notes:                                                                       }
 { fast_avx2_base64_encode and fast_avx2_base64_decode routines does not work   }
 { All the other routines works well and really fast, but the fastest one is    }
-{ fast_avx2_base64_encode and fast_avx2_base64_decode                          }
+{ klomp_avx2_base64_encode and klomp_avx2_base64_decode                          }
 {                                                                              }
 {******************************************************************************}
 
