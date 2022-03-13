@@ -1,4 +1,4 @@
-{******************************************************************************}
+ï»¿{******************************************************************************}
 {                                                                              }
 {               Ultrafast base64 encode/decode Library                         }
 {                                                                              }
@@ -13,7 +13,7 @@
 {                                                                              }
 { This is Delphi port to Lemire's project from C code.                         }
 {                                                                              }
-{ Copyright (c) 2022 Fatih Taþpýnar, fatihtsp@gmail.com                        }
+{ Copyright (c) 2022 Fatih TaÅŸpÄ±nar, fatihtsp@gmail.com                        }
 { All rights reserved.                                                         }
 { https://github.com/fatihtsp/FastBase64_EncDec                                }
 {                                                                              }
