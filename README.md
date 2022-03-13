@@ -61,7 +61,7 @@ Function Base64DecodeTxtKindFile( const EncodedData: PAnsiChar; const DataLen: I
                                   const SavingFileName: String = 'encodedTxtKindFile.txt' ): String;
 
 
-Test Results from command windows:
+Test Results from command window (project exe: FastBase64_AVX2_4D win64 application):
 
 
 Ultrafast base64 encode/decode library
