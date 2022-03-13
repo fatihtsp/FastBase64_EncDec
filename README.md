@@ -1,9 +1,10 @@
+               Ultrafast base64 encode/decode Library                         
+
 # FastBase64 Encoder / Decocder for Delphi.
 
 This repository includes a Delphi port of AVX2 based FastBase64 Encoder and Decoder and some tests.
-
                                                                               
-               Ultrafast base64 encode/decode Library                         
+
                                                                               
 Orginal project: https://github.com/aklomp/base64                            
 This is an implementation of a base64 stream encoding/decoding library in C99 with SIMD (AVX2, NEON, AArch64/NEON, SSSE3, SSE4.1, SSE4.2, AVX) and OpenMP acceleration. It also contains wrapper functions to encode/decode simple length-delimited strings.                                                    
