@@ -1,4 +1,4 @@
-program FastBase64_AVX2_4D;
+﻿program FastBase64_AVX2_4D;
 
 
 {$APPTYPE CONSOLE}
