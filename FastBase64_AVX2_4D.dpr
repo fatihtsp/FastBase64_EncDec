@@ -1,13 +1,13 @@
 ﻿program FastBase64_AVX2_4D;
 
-
 {$APPTYPE CONSOLE}
 
 {$R *.res}
 
 uses
-  FastMM5,
-  mormot.core.base,
+  // Those are needed???
+  // FastMM5,
+  // mormot.core.base,
 
   System.SysUtils, System.Classes, System.Threading, System.Win.Crtl,
   System.Diagnostics, System.Types, System.Net.Mime, System.NetEncoding,
@@ -25,6 +25,7 @@ begin
   Result := Encoding.GetString(StringBytes);
 end;
 
+// These are from stackoverflow....
 function FileMayBeUTF8(FileName: WideString): Boolean;
 var
  Stream: TMemoryStream;
@@ -50,7 +51,7 @@ begin
                PreviousByte := ArrayBuff[i-1];
                if ((ArrayBuff[i] and $c0) = $80) then begin
                    if ((PreviousByte and $c0) = $c0) then begin
-                       inc(YesSequences);
+                    inc(YesSequences);
                    end else begin
                     if ((PreviousByte and $80) = $0) then inc(NoSequences);
                    end;
@@ -67,7 +68,6 @@ end;
 
 function UTF8CharLength(const c: BYTE): Integer;
 begin
-
  if ((c and $80) = $00) then begin  // First Byte: 0xxxxxxx
   result := 1;
  end else if ((c and $E0) = $C0) then begin // First Byte: 110yyyyy
@@ -148,6 +148,20 @@ begin
 end;
 
 
+Procedure SaveStringToFile(const FileName: String; SaveStr: String; const Enc: TEncoding );
+var
+ ss: TStringStream;
+
+begin
+ try
+  ss := TStringStream.Create(SaveStr, Enc);
+  ss.SaveToFile(FileName)
+ finally
+  FreeAndNil(ss);
+ end;
+end;
+
+// Test files : current tests just for text files, and later binary files.
 const BigFileName     = 'BigFile-1.log';
 const VeryBigFileName = 'VeryBigFile.txt';
 
@@ -202,15 +216,11 @@ begin
     scalar_checkExample(@gosource[1],         @gocoded[1]);
     scalar_checkExample(@tutosource[1],       @tutocoded[1]);
 
-
-
     var sFileName: String;
     sFileName := VeryBigFileName;
 
-
     writeln;
     writeln('Encode File: ' + sFileName + '  klomp_avx2_base64_encode...');
-
 
     var sts : TMemoryStream;
     sts := TMemoryStream.Create;
@@ -222,7 +232,6 @@ begin
     var source  : PAnsiChar;
     var codedlen: Integer;
     var len     : Integer;
-
 
     source := PAnsiChar(sts.Memory);
 
@@ -244,7 +253,6 @@ begin
     writeLn('klomp_avx2_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
     writeLn(sFileName + ' file decoded length (bytes): ', len);
 
-
     //Make some tests ......
 
     var ss  : String;
@@ -261,12 +269,31 @@ begin
 
     Free(dest1);
     Free(dest2);
-    FreeAndNil(sts);
+
+
+
+    // System.NetEncoding tests
+    sts.Position := 0;
+
+    ST       := TStopwatch.StartNew;
+    ss       := System.NetEncoding.TNetEncoding.Base64String.Encode( PAnsiChar(sts.Memory) );
+    writeLn('System.NetEncoding.TNetEncoding.Base64String.Encode --> Time (ms): ', ST.ElapsedMilliseconds);
+    writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
+    writeLn(sFileName + 'file is decoding...');
+
+    ST       := TStopwatch.StartNew;
+    ss       := System.NetEncoding.TNetEncoding.Base64String.Decode( ss );
+    writeLn('System.NetEncoding.TNetEncoding.Base64String.Decode --> Time (ms): ', ST.ElapsedMilliseconds);
+    writeLn(sFileName + ' file decoded length (bytes): ', Length(ss));
+    SaveStringToFile( sFileName + '-TNetEncoding.Base64-EncDec.log', ss, TEncoding.Default );
+
 
     var s: String;
     dest1 := Base64EncodeTxtKindFile( sFileName, len );
     s     := Base64DecodeTxtKindFile( dest1, len, codedlen, True, 'big-txt-Enc_DecodedFunction.log');
     Free(dest1);
+
+    FreeAndNil(sts);
 
     WriteLn;
     WriteLn('Program finished... Press any key to quit.');
@@ -275,20 +302,6 @@ begin
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
   end;
+
 end.
-{$APPTYPE CONSOLE}
 
-{$R *.res}
-
-uses
-  System.SysUtils,
-  FastBase64U in 'Source\FastBase64U.pas';
-
-begin
-  try
-    { TODO -oUser -cConsole Main : Insert code here }
-  except
-    on E: Exception do
-      Writeln(E.ClassName, ': ', E.Message);
-  end;
-end.
