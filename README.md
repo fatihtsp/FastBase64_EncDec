@@ -40,9 +40,11 @@ Procedure scalar_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 Some inline routines from original code:
 
 //#define chromium_base64_encode_len(A) ((A+2)/3 * 4 + 1)
+
 Function chromium_base64_encode_len(Alen: Integer): Integer; 
 
 //#define chromium_base64_decode_len(A) (A / 4 * 3 + 2)
+
 Function chromium_base64_decode_len(Alen: Integer): Integer; 
 
 
