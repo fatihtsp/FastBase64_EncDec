@@ -25,19 +25,20 @@ fast_avx2_base64_encode and fast_avx2_base64_decode routines does not work. All 
 
 The unit file FastBase64U.pas includes these encode/decode functions:
 
-// Errornous fast_avx2 function call due to AVX2, 
-// that should be originated from and compilation settings in gcc
+Errornous fast_avx2 functions due to AVX2 that should be originated from and compilation settings in gcc
 Procedure fast_avx2_checkError();
 
 Procedure chromium_checkExample(const source: PAnsiChar; const coded: PAnsichar);
 
+Fastest base64 encode and decode in my tests klomp's functions, please consider to look at orginal C code using the link given above.
 Procedure klomp_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
-//errornous  fast_avx2 encode/decode
+
+Errornous  fast_avx2 encode/decode
 //Procedure fast_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
 Procedure scalar_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
-// Some inline routines from original code
+Some inline routines from original code
 Function chromium_base64_encode_len(Alen: Integer): Integer; //#define chromium_base64_encode_len(A) ((A+2)/3 * 4 + 1)
 Function chromium_base64_decode_len(Alen: Integer): Integer; //#define chromium_base64_decode_len(A) (A / 4 * 3 + 2)
 
