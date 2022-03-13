@@ -12,7 +12,7 @@ This is an implementation of a base64 stream encoding/decoding library in C99 wi
 The actual proje motivating is at https://github.com/lemire/fastbase64     
 SIMD-accelerated base64 codecs.                                              
                                                                             
-This is a Delphi port to Lemire's project from C code.
+This is a Delphi port to Lemire's project from C code. This project is still in-development stage, but first test are very promising.
                                                                           
 Copyright (c) 2022 Fatih Taşpınar, fatihtsp@gmail.com                     
 All rights reserved.                                                      
