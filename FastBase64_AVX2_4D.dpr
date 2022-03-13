@@ -5,7 +5,8 @@ program FastBase64_AVX2_4D;
 {$R *.res}
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  FastBase64U in 'Source\FastBase64U.pas';
 
 begin
   try
