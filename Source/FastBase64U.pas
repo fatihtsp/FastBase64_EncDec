@@ -15,6 +15,7 @@
 {                                                                              }
 { Copyright (c) 2022 Fatih Taþpýnar, fatihtsp@gmail.com                        }
 { All rights reserved.                                                         }
+{ https://github.com/fatihtsp/FastBase64_EncDec                                }
 {                                                                              }
 { Date: 10.03.2022                                                             }
 {                                                                              }
