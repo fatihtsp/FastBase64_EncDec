@@ -15,14 +15,13 @@
 {                                                                              }
 { Copyright (c) 2022 Fatih Taşpınar, fatihtsp@gmail.com                        }
 { All rights reserved.                                                         }
-{ https://github.com/fatihtsp/FastBase64_EncDec                                }
 {                                                                              }
 { Date: 10.03.2022                                                             }
 {                                                                              }
 { Notes:                                                                       }
 { fast_avx2_base64_encode and fast_avx2_base64_decode routines does not work   }
 { All the other routines works well and really fast, but the fastest one is    }
-{ klomp_avx2_base64_encode and klomp_avx2_base64_decode                          }
+{ fast_avx2_base64_encode and fast_avx2_base64_decode                          }
 {                                                                              }
 {******************************************************************************}
 
@@ -36,6 +35,9 @@ uses
  System.SyncObjs, System.Diagnostics;
 
 {$Z4}
+
+{$define HAVE_AVX2}
+{$define HAVE_AVX512BW}
 
 {.$define UNDERSCOREIMPORTNAME}
 
@@ -117,6 +119,13 @@ Procedure scalar_base64_encode(const src: PAnsiChar; srclen: size_t; _out: PAnsi
 function scalar_base64_decode(const src: PAnsiChar; srclen: size_t; _out: PAnsiChar; outlen: Psize_t): size_t; cdecl;
          external name _PU + 'scalar_base64_decode';
 
+{$ifdef HAVE_AVX512BW}
+function fast_avx512bw_base64_encode(dest: PAnsiChar; const src: PAnsiChar; srclen: size_t): size_t; cdecl;
+         external name _PU + 'scalar_base64_encode';
+
+function fast_avx512bw_base64_decode(dest: PAnsiChar; const src: PAnsiChar; srclen: size_t): size_t; cdecl;
+         external name _PU + 'scalar_base64_decode';
+{$endif}
 
 Procedure fast_avx2_checkError();
 Procedure chromium_checkExample(const source: PAnsiChar; const coded: PAnsichar);
@@ -124,8 +133,12 @@ Procedure klomp_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiCha
 Procedure fast_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 Procedure scalar_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
-Function chromium_base64_encode_len(Alen: Integer): Integer; //#define chromium_base64_encode_len(A) ((A+2)/3 * 4 + 1)
-Function chromium_base64_decode_len(Alen: Integer): Integer; //#define chromium_base64_decode_len(A) (A / 4 * 3 + 2)
+{$ifdef HAVE_AVX512BW}
+Procedure fast_avx512bw_checkExample(const source: PAnsichar; const coded: PAnsichar);
+{$endif}
+
+Function chromium_base64_encode_len(Alen: Integer): Integer; inline; //#define chromium_base64_encode_len(A) ((A+2)/3 * 4 + 1)
+Function chromium_base64_decode_len(Alen: Integer): Integer; inline; //#define chromium_base64_decode_len(A) (A / 4 * 3 + 2)
 
 
 // Use klomp_avx2_base64_encode routine to encode bytes in Filename file.
@@ -159,15 +172,18 @@ implementation
   {$L objs\Win64\fastavxbase64.o}
   {$L objs\Win64\klompavxbase64.o}
   {$L objs\Win64\scalarbase64.o}
+  {$ifdef HAVE_AVX512BW}
+  {$L objs\Win64\fastavx512bwbase64.o}
+  {$endif}
 {$endif}
 
 
-Function chromium_base64_encode_len(Alen: Integer): Integer;
+Function chromium_base64_encode_len(Alen: Integer): Integer;  inline;
 begin
  Result := (ceil((Alen+2)/3) * 4 + 1);
 end;
 
-Function chromium_base64_decode_len(Alen: Integer): Integer;
+Function chromium_base64_decode_len(Alen: Integer): Integer;  inline;
 begin
  Result := (floor(Alen / 4 * 3) + 2);
 end;
@@ -374,6 +390,46 @@ begin
     free(dest2);
     free(dest3);
 end;
+
+
+{$ifdef HAVE_AVX512BW}
+Procedure fast_avx512bw_checkExample(const source: PAnsichar; const coded: PAnsichar);
+begin
+    writeln;
+    writeln('fast_avx512bw codec check.');
+    var len     : size_t ;
+    var codedlen: size_t ;
+
+    var dest1: PAnsiChar;
+    dest1    := malloc(chromium_base64_encode_len(StrLen(source)));
+    ST       := TStopwatch.StartNew;
+    codedlen := fast_avx512bw_base64_encode(dest1, source, Strlen(source));
+    writeLn('fast_avx512bw_base64_encode --> Time (ms): ', ST.ElapsedMilliseconds);
+    //assert(strncmp(dest1, coded, codedlen) == 0);
+    writeLn('decoded: '); writeLn(dest1);
+    writeLn('real   : '); writeLn(coded);
+
+    var dest2: PAnsiChar;
+    dest2    := malloc(chromium_base64_decode_len(codedlen));
+    ST       := TStopwatch.StartNew;
+    len      := fast_avx512bw_base64_decode(dest2, coded, codedlen);
+    writeLn('fast_avx512bw_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
+    //assert(len == strlen(source));
+    //assert(strncmp(dest2, source, strlen(source)) == 0);
+
+    var dest3: PAnsiChar;
+    dest3    := malloc(chromium_base64_decode_len(codedlen));
+    ST       := TStopwatch.StartNew;
+    len      := fast_avx512bw_base64_decode(dest3, dest1, codedlen);
+    writeLn('fast_avx512bw_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
+    //assert(len == strlen(source));
+    //assert(strncmp(dest3, source, strlen(source)) == 0);
+
+    free(dest1);
+    free(dest2);
+    free(dest3);
+end;
+{$endif} // HAVE_AVX512BW
 
 
 Function Base64EncodeTxtKindFile( const FileName: String; out EncodedLen: Integer ): PAnsiChar;

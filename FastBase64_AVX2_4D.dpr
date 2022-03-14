@@ -228,10 +228,16 @@ begin
 //    fast_avx2_checkExample(@gosource[1],        @gocoded[1]);
 //    fast_avx2_checkExample(@tutosource[1],      @tutocoded[1]);
 
-
     scalar_checkExample(@wikipediasource[1],  @wikipediacoded[1]);
     scalar_checkExample(@gosource[1],         @gocoded[1]);
     scalar_checkExample(@tutosource[1],       @tutocoded[1]);
+
+
+//    AVX512 codes dont WORK, will check Objs for AVX512BW routines
+//    fast_avx512bw_checkExample(@wikipediasource[1], @wikipediacoded[1]);
+//    fast_avx512bw_checkExample(@gosource[1],        @gocoded[1]);
+//    fast_avx512bw_checkExample(@tutosource[1],      @tutocoded[1]);
+
 
     var sFileName: String;
     //sFileName := VeryBigFileName;
@@ -270,6 +276,35 @@ begin
     klomp_avx2_base64_decode(dest1, codedlen, dest2, @len);
     writeLn('klomp_avx2_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
     writeLn(sFileName + ' file decoded length (bytes): ', len);
+
+
+
+    {$ifdef HAVE_AVX512BW}
+
+    //fast_avx512bw_base64_encode & fast_avx512bw_base64_decode
+//    sts.Position := 0;
+//    source := PAnsiChar(sts.Memory);
+//
+//    //source := (StreamToString( sts, TEncoding.UTF8 ));
+//    //source      := PAnsiChar(sts.Memory);
+//    writeln(sFileName + ' file size (bytes): ', Length(source));
+//    dest1     := malloc(chromium_base64_encode_len(sts.Size));
+//    ST        := TStopwatch.StartNew;
+//    fast_avx512bw_base64_encode(PAnsiChar(source), sts.Size, dest1, @codedlen);
+//    writeln(sFileName + ' file encoded length (bytes)   : ', codedlen);
+//    writeLn('klomp_avx2_base64_encode --> Time (ms): ', ST.ElapsedMilliseconds);
+//
+//
+//    var dest2: PAnsiChar;
+//    dest2    := malloc(chromium_base64_decode_len(codedlen));
+//    writeLn(sFileName + 'file is decoding...');
+//    ST       := TStopwatch.StartNew;
+//    klomp_avx2_base64_decode(dest1, codedlen, dest2, @len);
+//    writeLn('klomp_avx2_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
+//    writeLn(sFileName + ' file decoded length (bytes): ', len);
+
+    {$endif}
+
 
     //Make some tests ......
 
