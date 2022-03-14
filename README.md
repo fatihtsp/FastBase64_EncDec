@@ -4,7 +4,6 @@
 
 This repository includes a Delphi port of AVX2 based FastBase64 Encoder and Decoder and some tests.
                                                                               
-
                                                                               
 Orginal project: https://github.com/aklomp/base64                            
 This is an implementation of a base64 stream encoding/decoding library in C99 with SIMD (AVX2, NEON, AArch64/NEON, SSSE3, SSE4.1, SSE4.2, AVX) and OpenMP acceleration. It also contains wrapper functions to encode/decode simple length-delimited strings.                                                    
@@ -20,12 +19,11 @@ All rights reserved.
 Date: 10.03.2022                                                          
                                                                           
 Notes:                                                                    
-fast_avx2_base64_encode and fast_avx2_base64_decode routines does not work. All the other routines works well and really fast, but the fastest one is klomp's base64 encode and decode routines.
+fast_avx2_base64_encode and fast_avx2_base64_decode routines work well those are produced by the obj files from  VC++ compiler, however, GCC compiled obj files are still errornous. All the other routines works well and really fast, but the fastest one is klomp's base64 encode and decode routines.
 
 The unit file FastBase64U.pas includes these encode/decode functions:
 
-Errornous fast_avx2 functions due to AVX2 that should be originated from and compilation settings in gcc
-//Procedure fast_avx2_checkError();
+Errornous fast_avx2 functions due to AVX2 that should be originated from and compilation settings in gcc, please test by using VC++ obj files when using Procedure fast_avx2_checkError procedure.
 
 Procedure chromium_checkExample(const source: PAnsiChar; const coded: PAnsichar);
 
