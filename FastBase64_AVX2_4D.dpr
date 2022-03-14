@@ -4,15 +4,22 @@
 
 {$R *.res}
 
-uses
-  // Those are needed???
-  // FastMM5,
-  // mormot.core.base,
+{$I ..\Definitions.inc}
 
-  System.SysUtils, System.Classes, System.Threading, System.Win.Crtl,
-  System.Diagnostics, System.Types, System.Net.Mime, System.NetEncoding,
-  IdGlobal, IdCoderMIME,
+uses
+  System.SysUtils,
+  System.Classes,
+  System.Threading,
+  System.Win.Crtl,
+  System.Diagnostics,
+  System.Types,
+  System.Math,
+  System.Net.Mime,
+  System.NetEncoding,
+  IdGlobal,
+  IdCoderMIME,
   FastBase64U in '.\Source\FastBase64U.pas';
+
 
 function StreamToString(const Stream: TStream; const Encoding: TEncoding): string;
 var
@@ -187,10 +194,20 @@ begin
 
     writeln('Ultrafast base64 encode/decode library');
     writeln('https://github.com/fatihtsp/FastBase64_EncDec');
+    {$ifdef VCCompiler}
+    writeln('Using VC Compiler produced objs files');
+    {$endif}
+    {$ifdef GCCCompiler}
+    writeln('Using GCC Compiler produced objs files');
+    {$endif}
     writeln('-------------------------------------------------------------------');
 
     // Not working currently, so it's gave away right now.
-    //fast_avx2_checkError();
+    {$ifdef VCCompiler}
+     {$ifdef HAVE_AVX2}
+      fast_avx2_checkError();
+     {$endif}
+    {$endif}
 
     const wikipediasource: AnsiString =
     'Man is distinguished, not only by his reason, but by this singular passion from ' +
@@ -217,27 +234,53 @@ begin
     chromium_checkExample(@gosource[1],   @gocoded[1]);
     chromium_checkExample(@tutosource[1], @tutocoded[1]);
 
-	  //{$ifdef HAVE_AVX2}
+	  {$ifdef HAVE_AVX2}
     klomp_avx2_checkExample(@wikipediasource[1], @wikipediacoded[1]);
     klomp_avx2_checkExample(@gosource[1],        @gocoded[1]);
     klomp_avx2_checkExample(@tutosource[1],      @tutocoded[1]);
-    //{$ENDIF}
+    {$ENDIF}
+
+
+    {.$define VC_Compiler}
 
     // ERROR in fast_avx2_checkExample (due to fast_avx2 encoding and decoding routines
-//    fast_avx2_checkExample(@wikipediasource[1], @wikipediacoded[1]);
-//    fast_avx2_checkExample(@gosource[1],        @gocoded[1]);
-//    fast_avx2_checkExample(@tutosource[1],      @tutocoded[1]);
+    {$ifdef VCCompiler}
+    writeln;
+    writeln('--------------------------------------------------------------------------------');
+    writeln('The fast_avx2 routines produced by VC compiler runs well anymore...!');
+    writeln('--------------------------------------------------------------------------------');
+    fast_avx2_checkExample(@wikipediasource[1], @wikipediacoded[1]);
+    fast_avx2_checkExample(@gosource[1],        @gocoded[1]);
+    fast_avx2_checkExample(@tutosource[1],      @tutocoded[1]);
+    {$else}
+    writeln;
+    writeln('------------------------------------------------------------------------------------------');
+    writeln('The fast_avx2 routines produced by GCC compiler dont run, and fails, so commented here...!');
+    writeln('------------------------------------------------------------------------------------------');
+    {$endif}
 
     scalar_checkExample(@wikipediasource[1],  @wikipediacoded[1]);
     scalar_checkExample(@gosource[1],         @gocoded[1]);
     scalar_checkExample(@tutosource[1],       @tutocoded[1]);
 
 
-//    AVX512 codes dont WORK, will check Objs for AVX512BW routines
-//    fast_avx512bw_checkExample(@wikipediasource[1], @wikipediacoded[1]);
-//    fast_avx512bw_checkExample(@gosource[1],        @gocoded[1]);
-//    fast_avx512bw_checkExample(@tutosource[1],      @tutocoded[1]);
-
+    //AVX512 codes dont WORK, will check Objs for AVX512BW routines
+    {$ifdef VCCompiler}
+    {$ifdef HAVE_AVX512}
+    writeln;
+    writeln('--------------------------------------------------------------------------------');
+    writeln('The fast_avx512bw routines produced by VC compiler runs well anymore...!');
+    writeln('--------------------------------------------------------------------------------');
+    fast_avx512bw_checkExample(@wikipediasource[1], @wikipediacoded[1]);
+    fast_avx512bw_checkExample(@gosource[1],        @gocoded[1]);
+    fast_avx512bw_checkExample(@tutosource[1],      @tutocoded[1]);
+    {$endif}
+    {$else}
+    writeln;
+    writeln('------------------------------------------------------------------------------------------');
+    writeln('The fast_avx512bw routines produced by GCC compiler dont run, and fails, so commented here...!');
+    writeln('------------------------------------------------------------------------------------------');
+    {$endif}
 
     var sFileName: String;
     //sFileName := VeryBigFileName;
@@ -279,18 +322,18 @@ begin
 
 
 
-    {$ifdef HAVE_AVX512BW}
-
+  {$ifdef HAVE_AVX512BW}
+    {$ifdef VCCompiler}
     //fast_avx512bw_base64_encode & fast_avx512bw_base64_decode
 //    sts.Position := 0;
 //    source := PAnsiChar(sts.Memory);
-//
-//    //source := (StreamToString( sts, TEncoding.UTF8 ));
-//    //source      := PAnsiChar(sts.Memory);
+
+    //source := (StreamToString( sts, TEncoding.UTF8 ));
+    //source      := PAnsiChar(sts.Memory);
 //    writeln(sFileName + ' file size (bytes): ', Length(source));
 //    dest1     := malloc(chromium_base64_encode_len(sts.Size));
 //    ST        := TStopwatch.StartNew;
-//    fast_avx512bw_base64_encode(PAnsiChar(source), sts.Size, dest1, @codedlen);
+//    codedlen  := fast_avx512bw_base64_encode(dest1, PAnsiChar(source), sts.Size);
 //    writeln(sFileName + ' file encoded length (bytes)   : ', codedlen);
 //    writeLn('klomp_avx2_base64_encode --> Time (ms): ', ST.ElapsedMilliseconds);
 //
@@ -302,8 +345,8 @@ begin
 //    klomp_avx2_base64_decode(dest1, codedlen, dest2, @len);
 //    writeLn('klomp_avx2_base64_decode --> Time (ms): ', ST.ElapsedMilliseconds);
 //    writeLn(sFileName + ' file decoded length (bytes): ', len);
-
     {$endif}
+  {$endif}
 
 
     //Make some tests ......

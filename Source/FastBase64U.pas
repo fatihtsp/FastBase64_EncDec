@@ -36,8 +36,7 @@ uses
 
 {$Z4}
 
-{$define HAVE_AVX2}
-{$define HAVE_AVX512BW}
+{$I ..\Definitions.inc}
 
 {.$define UNDERSCOREIMPORTNAME}
 
@@ -168,13 +167,27 @@ implementation
   //{.$L objs\Win32\chromiumbase64.obj}
   //{.$L objs\Win32\fastavxbase64.obj}
 {$else}
-  {$L objs\Win64\chromiumbase64.o}
-  {$L objs\Win64\fastavxbase64.o}
-  {$L objs\Win64\klompavxbase64.o}
-  {$L objs\Win64\scalarbase64.o}
+
+ {$ifdef GCCCompiler}
+  {$L objs\Win64\gcc\chromiumbase64.o}
+  {$L objs\Win64\gcc\fastavxbase64.o}
+  {$L objs\Win64\gcc\klompavxbase64.o}
+  {$L objs\Win64\gcc\scalarbase64.o}
   {$ifdef HAVE_AVX512BW}
-  {$L objs\Win64\fastavx512bwbase64.o}
+  {$L objs\Win64\gcc\fastavx512bwbase64.o}
   {$endif}
+ {$endif}
+
+ {$ifdef VCCompiler}
+  {$L objs\Win64\vc\chromiumbase64.o}
+  {$L objs\Win64\vc\fastavxbase64.o}
+  {$L objs\Win64\vc\klompavxbase64.o}
+  {$L objs\Win64\vc\scalarbase64.o}
+  {$ifdef HAVE_AVX512BW}
+  {$L objs\Win64\vc\fastavx512bwbase64.o}
+  {$endif}
+ {$endif}
+
 {$endif}
 
 
@@ -204,9 +217,9 @@ var
 
 begin
  writeln('fast_avx2 codec error check.\n');
- writeln(base64_table_enc[1]);
- writeln('size of char    : ', sizeof(char));
- writeln('size of ansichar: ', sizeof(ansichar));
+ //writeln(base64_table_enc[1]);
+ //writeln('size of char    : ', sizeof(char));
+ //writeln('size of ansichar: ', sizeof(ansichar));
 
  SetLength(source, 65);source[65] := #0;
  SetLength(dest, 49);  dest[49]   := #0;
@@ -218,21 +231,23 @@ begin
   //writeLn(len);
   //assert(len = 48);
  end;
- writeln('(1) ok\n');
+ writeln('(1) fast_avx2_base64_decode ok.');
 
-// for z := 0 to 255 do begin
-//  in_list := false;
-//  for zz := 0 to 64-1 do
-//   if (base64_table_enc[zz] = char(z)) then in_list := true;
-//   if (not in_list) then begin
-//    for pos := 0 to 32-1 do begin
-//     for i := 0 to 64-1 do source[i] := 'A';
-//     source[pos] := char(z);
-//     len := fast_avx2_base64_decode(@dest, @source, 64);
-//     assert(len = -1);
-//    end;
-//   end;
-// end;
+ for z := 0 to 255 do begin
+  in_list := false;
+  for zz := 0 to 64-1 do
+   if (base64_table_enc[zz] = char(z)) then in_list := true;
+   if (not in_list) then begin
+    for pos := 0 to 32-1 do begin
+     for i := 0 to 64-1 do source[i] := 'A';
+     source[pos] := char(z);
+     len := fast_avx2_base64_decode(@dest, @source, 64);
+     //assert(len = -1);
+    end;
+   end;
+ end;
+
+ writeln('(2) fast_avx2_base64_decode ok.');
 
 end;
 
