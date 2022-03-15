@@ -1,6 +1,6 @@
                                             Ultrafast base64 encode/decode Library                
 
-# FastBase64 Encoder / Decocder for Delphi.
+## FastBase64 Encoder / Decocder for Delphi.
 
 This repository includes a Delphi port of AVX2 based FastBase64 Encoder and Decoder and some tests.
                                                                               
@@ -23,27 +23,25 @@ fast_avx2_base64_encode and fast_avx2_base64_decode routines work well those are
 
 The unit file FastBase64U.pas includes these encode/decode functions:
 
-Errornous fast_avx2 functions due to AVX2 that should be originated from and compilation settings in gcc, please test by using VC++ obj files when using Procedure fast_avx2_checkError procedure.
+Errornous fast_avx2 functions due to AVX2 that should be originated from and compilation settings in gcc, please test by using VC++ obj files when using
+fast_avx2_checkError procedure.
 
-Procedure chromium_checkExample(const source: PAnsiChar; const coded: PAnsichar);
+* Procedure chromium_checkExample(const source: PAnsiChar; const coded: PAnsichar);
 
 Fastest base64 encode and decode in my tests klomp's functions, please consider to look at orginal C code using the link given above.
-Procedure klomp_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
+* Procedure klomp_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
-Errornous  fast_avx2 encode/decode
-//Procedure fast_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
+* Procedure fast_avx2_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
-Procedure scalar_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
+* Procedure scalar_checkExample(const source: PAnsiChar; const coded: PAnsiChar);
 
 Some inline routines from original code:
 
 //#define chromium_base64_encode_len(A) ((A+2)/3 * 4 + 1)
-
-Function chromium_base64_encode_len(Alen: Integer): Integer; 
+*Function chromium_base64_encode_len(Alen: Integer): Integer; 
 
 //#define chromium_base64_decode_len(A) (A / 4 * 3 + 2)
-
-Function chromium_base64_decode_len(Alen: Integer): Integer; 
+* Function chromium_base64_decode_len(Alen: Integer): Integer; 
 
 
 
@@ -61,6 +59,7 @@ Function Base64DecodeTxtKindFile( const EncodedData: PAnsiChar; const DataLen: I
 
 Test Results from command window (project exe: FastBase64_AVX2_4D win64 application):
 
+## TEST RESULS
 
 Ultrafast base64 encode/decode library
 
@@ -191,3 +190,4 @@ VeryBigFile.txt file decoded length (bytes): 28600157
 
 Program finished... Press any key to quit.
 
+## END
